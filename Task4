@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .timer {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Countdown Timer</h1>
+    <div class="timer text-center" id="timer">00:00:00</div>
+    <div class="text-center">
+      <button class="btn btn-primary mr-2" onclick="startTimer()">Start</button>
+      <button class="btn btn-warning mr-2" onclick="stopTimer()">Stop</button>
+      <button class="btn btn-danger mr-2" onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    let timerInterval;
+    let totalSeconds = 0;
+
+    function startTimer() {
+      if (!timerInterval) {
+        timerInterval = setInterval(updateTimer, 1000);
+      }
+    }
+
+    function updateTimer() {
+      totalSeconds--;
+      if (totalSeconds <= 0) {
+        stopTimer();
+        document.getElementById('timer').innerText = '00:00:00';
+        return;
+      }
+
+      let hours = Math.floor(totalSeconds / 3600);
+      let minutes = Math.floor((totalSeconds % 3600) / 60);
+      let seconds = totalSeconds % 60;
+
+      let formattedTime = 
+        (hours < 10 ? '0' + hours : hours) + ':' +
+        (minutes < 10 ? '0' + minutes : minutes) + ':' +
+        (seconds < 10 ? '0' + seconds : seconds);
+
+      document.getElementById('timer').innerText = formattedTime;
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      totalSeconds = prompt('Enter time in seconds:', '60');
+      updateTimer();
+    }
+
+    window.onload = function() {
+      resetTimer();
+    };
+  </script>
+</body>
+</html>
